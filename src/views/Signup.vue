@@ -65,7 +65,11 @@ export default {
         await this.eosio.transaction('login', { user: this.eosio.account.name })
       ) {
         this.logDetails.pubkey=this.eosio.account.publicKey;
-        this.checkLogin();
+        if(this.checkLogin()){
+          console.log(this.logDetails);
+          this.$store.commit('loginStatus', true);
+              //this.$router.push('home');
+            }
       }
     },
 
@@ -81,10 +85,9 @@ export default {
       var logForm = this.toFormData(this.logDetails);
       axios.post('https://www.copiedcode.com/signup.php', logForm)
         .then(function(response){
-            setTimeout(function(){
-              this.$store.commit('loginStatus', true);
-              //this.$router.push('home');
-            },2000);
+            if(response.data.error)
+              return false;
+            return true;
         });
     },
   
