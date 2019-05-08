@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       accountName: '',
-      privateKey: '',
+      logDetails: {pubkey: ''},
       eosio: null
     };
   },
@@ -48,9 +48,42 @@ export default {
       if (
         await this.eosio.transaction('login', { user: this.eosio.account.name })
       ) {
-        this.$store.commit('loginStatus', true);
-        this.$router.push('home');
+        this.logDetails.pubkey=this.eosio.account.publicKey;
+        if(this.checkLogin()){
+          console.log(this.logDetails);
+          this.$store.commit('loginStatus', true);
+          this.$router.push('home');
+          }
+        }
       }
+    },
+
+    keymonitor: function(event) {
+          if(event.key == "Enter"){
+            this.checkLogin();
+          }
+        },
+
+ 
+    checkLogin: function(){
+      const axios = require('axios')
+      var logForm = this.toFormData(this.logDetails);
+      axios.post('https://www.copiedcode.com/login.php', logForm)
+        .then(function(response){
+            if(response.data.error){
+              console.log(response.data.message);
+              return false;
+            }
+            return true;
+        });
+    },
+  
+    toFormData: function(obj){
+      var form_data = new FormData();
+      for(var key in obj){
+        form_data.append(key, obj[key]);
+      }
+      return form_data;
     }
   }
 };

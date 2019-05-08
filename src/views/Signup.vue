@@ -70,7 +70,7 @@ export default {
           this.$store.commit('loginStatus', true);
               this.$router.push('home');
             }
-      }
+        }
     },
 
     keymonitor: function(event) {
