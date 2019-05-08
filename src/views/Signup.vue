@@ -1,5 +1,7 @@
 <template>
-  <span v-html="rawHTML"></span></p>
+  <v-container>
+    <span v-html="rawHTML"></span>
+  </v-container>
 </template>
 <script src="axios.js"></script>
 <script>
@@ -44,8 +46,8 @@ export default {
   data() {
     return {
       accountName: '',
-      successMessage: "",
-      errorMessage: "",
+      successMessage: '',
+      errorMessage: '',
       logDetails: {email: '', pubkey: ''},
       eosio: null
     };
