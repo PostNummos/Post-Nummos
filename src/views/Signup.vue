@@ -10,7 +10,7 @@
             <v-card-title primary-title>
               <h4>Signup</h4>
             </v-card-title>
-            <v-form v-model="valid">
+            <v-form>
               <v-container>
                 <v-layout>
                   <v-flex
@@ -92,7 +92,7 @@ export default {
             this.logDetails = {email: '', pubkey:''};
             setTimeout(function(){
               this.$store.commit('loginStatus', true);
-              this.$router.push('home');
+              //this.$router.push('home');
             },2000);
  
           }
