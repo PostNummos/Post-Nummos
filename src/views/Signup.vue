@@ -68,7 +68,7 @@ export default {
         if(this.checkLogin()){
           console.log(this.logDetails);
           this.$store.commit('loginStatus', true);
-              //this.$router.push('home');
+              this.$router.push('home');
             }
       }
     },
