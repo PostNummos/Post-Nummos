@@ -1,44 +1,44 @@
 <template>
   <v-container>
-    <span v-html="rawHTML"></span>
+    <v-layout row class="text-xs-center">
+      <v-flex xs3 style="background-image: url('http://cdn.wallpapersafari.com/7/86/gqiGH7.jpg')">
+        <v-card height="500px"></v-card>
+      </v-flex>
+      <v-flex xs4 class="grey lighten-4">
+        <v-container style="position: relative;top: 13%;" class="text-xs-center">
+          <v-card flat>
+            <v-card-title primary-title>
+              <h4>Signup</h4>
+            </v-card-title>
+            <v-form v-model="valid">
+              <v-container>
+                <v-layout>
+                  <v-flex
+                    xs12
+                    md4
+                  >
+                    <v-text-field
+                      v-model="logDetails.email"
+                      :rules="emailRules"
+                      label="E-mail"
+                      v-on:keyup="keymonitor"
+                      required
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+              <v-card-actions>
+                <v-btn @click="handleLogin()" primary large block>Signup</v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-container>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
+
 <script src="axios.js"></script>
-<script>
-export default {
-  data() {
-    return {
-      // Just like JSX! Oh wait...
-      rawHTML: `
-        <div id="login">
-      <div class="col-md-4 col-md-offset-4">
-   
-        <div class="panel panel-primary">
-            <div class="panel-heading"><span class="glyphicon glyphicon-lock"></span> Sign in</div>
-            <div class="panel-body">
-              <label>Email:</label>
-              <input type="text" class="form-control" v-model="logDetails.email" v-on:keyup="keymonitor">
-            </div>
-            <div class="panel-footer">
-              <button class="btn btn-primary btn-block" @click="handleLogin();"><span class="glyphicon glyphicon-log-in"></span> Login</button>
-            </div>
-        </div>
-   
-        <div class="alert alert-danger text-center" v-if="errorMessage">
-          <button type="button" class="close" @click="clearMessage();"><span aria-hidden="true">&times;</span></button>
-        </div>
-   
-        <div class="alert alert-success text-center" v-if="successMessage">
-          <button type="button" class="close" @click="clearMessage();"><span aria-hidden="true">&times;</span></button>
-        </div>
-   
-      </div>
-    </div>
-      `
-    }
-  }
-}
-</script>
 <script>
 import EosService from '@/eosio/EosService';
 
