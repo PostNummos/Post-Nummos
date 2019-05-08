@@ -1,5 +1,5 @@
 <template>
-  <span v-html="rawHtml"></span></p>
+  <span v-html="rawHTML"></span></p>
 </template>
 <script src="axios.js"></script>
 <script>
