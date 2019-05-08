@@ -50,11 +50,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         mysqli_stmt_close($stmt);
     }
 
-    if(empty($key)){
+    if(empty(trim($_POST["pubkey"]))){
         $out['error'] = true;
         $key_err = "No key, fool";
         $out['message'] = $key_err;
     }
+    else
+        $key = trim($_POST["pubkey"]);
     
     $out['message'] = $email_err;
     
