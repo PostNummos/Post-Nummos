@@ -45,8 +45,6 @@ export default {
   data() {
     return {
       accountName: '',
-      successMessage: '',
-      errorMessage: '',
       logDetails: {email: '', pubkey: ''},
       eosio: null
     };
@@ -83,20 +81,12 @@ export default {
       var logForm = this.toFormData(this.logDetails);
       axios.post('https://www.copiedcode.com/signup.php', logForm)
         .then(function(response){
- 
-          if(response.data.error){
-            this.errorMessage = response.data.message;
-          }
-          else{
-            this.successMessage = response.data.message;
             console.log(this.logDetails);
             this.logDetails = {email: '', pubkey:''};
             setTimeout(function(){
               this.$store.commit('loginStatus', true);
               //this.$router.push('home');
             },2000);
- 
-          }
         });
     },
   
@@ -106,12 +96,8 @@ export default {
         form_data.append(key, obj[key]);
       }
       return form_data;
-    },
- 
-    clearMessage: function(){
-      this.errorMessage = '';
-      this.successMessage = '';
     }
+ 
   }
 };
 </script>
