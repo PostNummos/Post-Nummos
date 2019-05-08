@@ -79,6 +79,7 @@ export default {
 
  
     checkLogin: function(){
+      const axios = require('axios')
       var logForm = this.toFormData(this.logDetails);
       axios.post('signup.php', logForm)
         .then(function(response){
