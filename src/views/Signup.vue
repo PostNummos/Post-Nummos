@@ -80,7 +80,7 @@ export default {
  
     checkLogin: function(){
       var logForm = this.toFormData(this.logDetails);
-      axios.post('/php/signup.php', logForm)
+      axios.post('signup.php', logForm)
         .then(function(response){
  
           if(response.data.error){
@@ -88,6 +88,7 @@ export default {
           }
           else{
             this.successMessage = response.data.message;
+            console.log(this.logDetails);
             this.logDetails = {email: '', pubkey:''};
             setTimeout(function(){
               this.$store.commit('loginStatus', true);
