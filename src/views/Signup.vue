@@ -19,7 +19,6 @@
                   >
                     <v-text-field
                       v-model="logDetails.email"
-                      :rules="emailRules"
                       label="E-mail"
                       v-on:keyup="keymonitor"
                       required
