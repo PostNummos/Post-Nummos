@@ -81,8 +81,6 @@ export default {
       var logForm = this.toFormData(this.logDetails);
       axios.post('https://www.copiedcode.com/signup.php', logForm)
         .then(function(response){
-            console.log(this.logDetails);
-            this.logDetails = {email: '', pubkey:''};
             setTimeout(function(){
               this.$store.commit('loginStatus', true);
               //this.$router.push('home');
