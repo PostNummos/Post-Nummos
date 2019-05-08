@@ -1,3 +1,4 @@
+<script src="axios.js"></script>
 <script>
 import EosService from '@/eosio/EosService';
 
@@ -27,28 +28,28 @@ export default {
         await this.eosio.transaction('login', { user: this.eosio.account.name })
       ) {
         this.logDetails.pubkey=this.eosio.account.publicKey;
-        checkLogin()
+        this.checkLogin();
       }
     },
 
     keymonitor: function(event) {
           if(event.key == "Enter"){
-            app.checkLogin();
+            this.checkLogin();
           }
         },
 
  
     checkLogin: function(){
-      var logForm = app.toFormData(app.logDetails);
+      var logForm = this.toFormData(this.logDetails);
       axios.post('/php/signup.php', logForm)
         .then(function(response){
  
           if(response.data.error){
-            app.errorMessage = response.data.message;
+            this.errorMessage = response.data.message;
           }
           else{
-            app.successMessage = response.data.message;
-            app.logDetails = {email: '', pubkey:''};
+            this.successMessage = response.data.message;
+            this.logDetails = {email: '', pubkey:''};
             setTimeout(function(){
               this.$store.commit('loginStatus', true);
               this.$router.push('home');
@@ -67,8 +68,8 @@ export default {
     },
  
     clearMessage: function(){
-      app.errorMessage = '';
-      app.successMessage = '';
+      this.errorMessage = '';
+      this.successMessage = '';
     }
   }
 };
