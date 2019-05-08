@@ -85,8 +85,10 @@ export default {
       var logForm = this.toFormData(this.logDetails);
       axios.post('https://www.copiedcode.com/signup.php', logForm)
         .then(function(response){
-            if(response.data.error)
+            if(response.data.error){
+              console.log(response.data.message);
               return false;
+            }
             return true;
         });
     },
