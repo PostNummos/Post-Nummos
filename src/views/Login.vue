@@ -55,8 +55,7 @@ export default {
           this.$router.push('home');
           }
         }
-      }
-    },
+      },
 
     keymonitor: function(event) {
           if(event.key == "Enter"){
