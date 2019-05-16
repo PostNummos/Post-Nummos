@@ -23,6 +23,11 @@
                       v-on:keyup="keymonitor"
                       required
                     ></v-text-field>
+                    <input type="radio" v-model="logDetails.status" v->
+                    <label for="one">Individual</label>
+                    <br>
+                    <input type="radio" id="two" value="Two" v-model="picked">
+                    <label for="two">Organization</label>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -36,7 +41,9 @@
     </v-layout>
   </v-container>
 </template>
-
+<script>
+    window.open('scatter://','_self');
+</script>
 <script src="axios.js"></script>
 <script>
 import EosService from '@/eosio/EosService';
@@ -45,12 +52,13 @@ export default {
   data() {
     return {
       accountName: '',
-      logDetails: {email: '', pubkey: ''},
+      logDetails: {email: '', pubkey: '', status: 0},
       eosio: null
     };
   },
   methods: {
     handleLogin: async function() {
+
       if (this.eosio === null) {
         this.eosio = new EosService(
           process.env.VUE_APP_DAPP_NAME,

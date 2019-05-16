@@ -21,7 +21,9 @@
     </v-layout>
   </v-container>
 </template>
-
+<script>
+    window.open('scatter://','_self');
+</script>
 <script>
 import EosService from '@/eosio/EosService';
 
