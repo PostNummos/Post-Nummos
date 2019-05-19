@@ -23,10 +23,10 @@
                       v-on:keyup="keymonitor"
                       required
                     ></v-text-field>
-                    <input type="radio" v-model="logDetails.status" v->
+                    <input type="radio" v-model="logDetails.status" value="0">
                     <label for="one">Individual</label>
                     <br>
-                    <input type="radio" id="two" value="Two" v-model="picked">
+                    <input type="radio" v-model="logDetails.status" value="1">
                     <label for="two">Organization</label>
                   </v-flex>
                 </v-layout>
@@ -41,24 +41,22 @@
     </v-layout>
   </v-container>
 </template>
-<script>
-    window.open('scatter://','_self');
-</script>
 <script src="axios.js"></script>
 <script>
+window.open('scatter://','_self');
 import EosService from '@/eosio/EosService';
 
 export default {
   data() {
     return {
       accountName: '',
-      logDetails: {email: '', pubkey: '', status: 0},
+      logDetails: {email: '', pubkey: '', status: ''},
       eosio: null
     };
   },
   methods: {
     handleLogin: async function() {
-
+      const self = this;
       if (this.eosio === null) {
         this.eosio = new EosService(
           process.env.VUE_APP_DAPP_NAME,
@@ -73,33 +71,28 @@ export default {
         await this.eosio.transaction('login', { user: this.eosio.account.name })
       ) {
         this.logDetails.pubkey=this.eosio.account.publicKey;
-        if(this.checkLogin()){
-          console.log(this.logDetails);
-          this.$store.commit('loginStatus', true);
-              this.$router.push('home');
-            }
-        }
-    },
-
-    keymonitor: function(event) {
-          if(event.key == "Enter"){
-            this.checkLogin();
-          }
-        },
-
- 
-    checkLogin: function(){
       const axios = require('axios')
       var logForm = this.toFormData(this.logDetails);
       axios.post('https://www.copiedcode.com/signup.php', logForm)
         .then(function(response){
-            if(response.data.error){
+            if(response.data.error!=""){
               console.log(response.data.message);
-              return false;
             }
-            return true;
+            else{
+              self.$store.commit('loginStatus', true);
+              self.$router.push('home');
+            }
         });
+      }
     },
+
+    keymonitor: function(event) {
+          if(event.key == "Enter"){
+            this.handleLogin();
+          }
+        },
+
+ 
   
     toFormData: function(obj){
       var form_data = new FormData();

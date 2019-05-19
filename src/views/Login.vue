@@ -26,7 +26,6 @@
 </script>
 <script>
 import EosService from '@/eosio/EosService';
-
 export default {
   data() {
     return {
@@ -37,6 +36,7 @@ export default {
   },
   methods: {
     handleLogin: async function() {
+      const self = this;
       if (this.eosio === null) {
         this.eosio = new EosService(
           process.env.VUE_APP_DAPP_NAME,
@@ -51,11 +51,18 @@ export default {
         await this.eosio.transaction('login', { user: this.eosio.account.name })
       ) {
         this.logDetails.pubkey=this.eosio.account.publicKey;
-        if(this.checkLogin()){
-          console.log(this.logDetails);
-          this.$store.commit('loginStatus', true);
-          this.$router.push('home');
-          }
+        const axios = require('axios')
+        var logForm = this.toFormData(this.logDetails);
+        axios.post('https://www.copiedcode.com/login.php', logForm)
+        .then(function(response){
+            if(response.data.error){
+              console.log(response.data.message);
+            }
+            else{
+              self.$store.commit('loginStatus', true);
+              self.$router.push('home');
+            }
+          });
         }
       },
 
@@ -66,18 +73,6 @@ export default {
         },
 
  
-    checkLogin: function(){
-      const axios = require('axios')
-      var logForm = this.toFormData(this.logDetails);
-      axios.post('https://www.copiedcode.com/login.php', logForm)
-        .then(function(response){
-            if(response.data.error){
-              console.log(response.data.message);
-              return false;
-            }
-            return true;
-        });
-    },
   
     toFormData: function(obj){
       var form_data = new FormData();
