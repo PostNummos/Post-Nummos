@@ -14,7 +14,7 @@ export default {
   name: 'AppTopBar',
   data() {
     return {
-      appTitle: 'My EOS Dapp'
+      appTitle: 'Heifer Donation Transparency'
     };
   },
   methods: {

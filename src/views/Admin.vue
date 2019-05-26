@@ -1,6 +1,6 @@
 <template>
   <v-card-title primary-title>
-    <h4>Non-Admin User Page</h4>
+    <h4>Admin User Page</h4>
   </v-card-title>
 </template>
 

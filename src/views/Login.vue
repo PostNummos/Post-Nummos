@@ -60,7 +60,10 @@ export default {
             }
             else{
               self.$store.commit('loginStatus', true);
-              self.$router.push('home');
+              if(response.data.admin)
+                self.$router.push('admin');
+              else
+                self.$router.push('home');
             }
           });
         }
