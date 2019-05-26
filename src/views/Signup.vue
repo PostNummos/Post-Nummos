@@ -79,6 +79,7 @@ export default {
               console.log(response.data.message);
             }
             else{
+              console.log(response.data.message);
               self.$store.commit('loginStatus', true);
               self.$router.push('home');
             }
@@ -99,6 +100,7 @@ export default {
       for(var key in obj){
         form_data.append(key, obj[key]);
       }
+      console.log(obj);
       return form_data;
     }
  
