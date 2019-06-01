@@ -1,20 +1,24 @@
 <template>
   <v-container>
-
-  <v-card-title primary-title>
-    <h4>Non-Admin User Page</h4>
-  </v-card-title>
-  <v-card flat>
-            <v-card-title primary-title>
-              <h4>Login</h4>
-            </v-card-title>
-            <v-form>
-              <v-card-actions>
-                <v-btn @click="donate()" primary large block>Login</v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-            </v-container>
+    <v-card-title primary-title>
+      <h4>Non-Admin User Page</h4>
+    </v-card-title>
+    <v-card flat>
+      <v-card-title primary-title>
+        <h4>Donate</h4>
+      </v-card-title>
+      <ul id="v-for-object" class="demo">
+        <li v-for="value in projects">
+          {{ value.title }}
+        </li>
+      </ul>
+      <v-form>
+        <v-card-actions>
+          <v-btn @click="donate()" primary large block>Donate</v-btn>
+        </v-card-actions>
+      </v-form>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -25,26 +29,38 @@ export default {
     return {
       accountName: '',
       logDetails: {pubkey: ''},
+      projects:{},
       eosio: null
     };
   },
   methods:{
-    /*
+    
     getJSON: async function(){
+      console.log("in")
       var xhttp = new XMLHttpRequest();
       var url = 'https://www.copiedcode.com/getprojects.php';
       xhttp.open("GET", url);
       xhttp.send();
       xhttp.onreadystatechange=(e)=>{
         if(xhttp.readyState == 4 && xhttp.status == 200){
-          var projects = JSON.parse(xhttp.responseText);
-          for(key in projects){
-            //create project
+           var projectData = JSON.parse(xhttp.responseText);
+           console.log(projectData);
+          for(var key in projectData){
+            console.log("before: " + this.projects);
+            this.projects = Object.assign({}, this.projects, {
+              title: this.projects[key].title,
+              id: this.projects[key].id,
+              goal: this.projects[key].goal,
+              image: this.projects[key].image,
+              description: this.projects[key].description,
+              publickey: this.projects[key].publickey
+            })
+            console.log("after: " + this.projects);
           }
         }
       }
     },
-    */
+    
     donate: async function() {
       const self = this;
       if (this.eosio === null) {
@@ -63,6 +79,9 @@ export default {
           console.log("success");
         }
       }
+  },
+  created() {
+    this.getJSON();
   }
 };
 /*

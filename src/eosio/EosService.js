@@ -79,7 +79,7 @@ class EosService {
     console.log(resultWithConfig);
   }
   */
-
+  /*
   transferToken = async api => {
     try {
       const from = this.scatter.account('eos');
@@ -107,6 +107,7 @@ class EosService {
       console.error(e);
     }
   };
+  */
   
 }
 
