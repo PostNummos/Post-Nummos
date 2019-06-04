@@ -66,49 +66,7 @@ class EosService {
     console.log(resultWithConfig);
     return true;
   };
-/*
-  transferToken = async()=>{
-    this.api = this.scatter.eos(network, Api, { rpc: this.rpc });
-    const transactionOptions = { authorization:[`${this.account.name}@${this.account.authority}`] };
-    const resultWithConfig = await this.api.transfer(this.account.name,'testproheife', '10.0000 EOS', '', {authorization: [
-              {
-                actor: this.account.name,
-                permission: this.account.authority
-              }
-            ]});
-    console.log(resultWithConfig);
-  }
-  */
-  /*
-  transferToken = async api => {
-    try {
-      const from = this.scatter.account('eos');
-      const result = await this.api.transact({
-        actions: [{
-          account: 'eosio.token',
-          name: 'transfer',
-          authorization: [{
-            actor: from.name,
-            permission: from.authority,
-          }],
-          data: {
-            from: from.name,
-            to: 'safetransfer',
-            quantity: '0.0001 EOS',
-            memo: from.name,
-          },
-        }]
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30,
-      });
-      console.log('result', result);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  */
-  
+   
 }
 
 export default EosService;
