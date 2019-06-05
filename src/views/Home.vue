@@ -8,11 +8,11 @@
         <h4>Donate</h4>
       </v-card-title>
       <ul id="v-for-object" class="demo">
-        <li v-for="value in projects">
-          <!--img src:"value.image"-->
-          {{ value.title }}
-          {{ value.description}}
-          EOS Public Key: {{value.key}}
+        <li v-for="value in projects"><br>
+          <img v-bind:src="value.image" :alt= value.title /><br>
+          {{ value.title }}<br>
+          {{ value.description}}<br>
+          EOS Public Key: {{value.publickey}}<br>
         </li>
       </ul>
       <v-form>
@@ -44,7 +44,7 @@ export default {
       var url = 'https://www.copiedcode.com/getprojects.php';
       xhttp.open("GET", url);
       xhttp.send();
-      xhttp.onreadystatechange=(e)=>{
+      xhttp.onreadystatechange=()=>{
         if(xhttp.readyState == 4 && xhttp.status == 200){
            var projectData = JSON.parse(xhttp.responseText);
           for(var key in projectData){
