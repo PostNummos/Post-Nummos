@@ -9,7 +9,7 @@
       </v-card-title>
       <ul id="v-for-object" class="demo">
         <li v-for="value in projects">
-          <img src ={{value.image}}>
+          <!--img src:"value.image"-->
           {{ value.title }}
           {{ value.description}}
           EOS Public Key: {{value.key}}
@@ -63,7 +63,6 @@ export default {
     },
     
     donate: async function() {
-      const self = this;
       if (this.eosio === null) {
         this.eosio = new EosService(
           process.env.VUE_APP_DAPP_NAME,
@@ -76,7 +75,7 @@ export default {
 
       if (
         //to, from, memo, quantity. see: https://eosio.stackexchange.com/questions/3587/how-to-transfer-eos-token-using-scatter-js-or-eos-js
-        await this.eosio.transaction('transfer', { from: this.eosio.account.name, to: "destinationaccount", quantity: : "50.0000 EOS", memo: "Project Name" })
+        await this.eosio.transaction('transfer', { from: this.eosio.account.name, to: "destinationaccount", quantity: "50.0000 EOS", memo: "Project Name" })
       ) {
           console.log("success");
         }
