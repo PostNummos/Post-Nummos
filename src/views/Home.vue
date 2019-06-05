@@ -29,14 +29,14 @@ export default {
     return {
       accountName: '',
       logDetails: {pubkey: ''},
-      projects:{},
+      projects:[],
       eosio: null
     };
   },
   methods:{
     
     getJSON: async function(){
-      console.log("in")
+      var self= this;
       var xhttp = new XMLHttpRequest();
       var url = 'https://www.copiedcode.com/getprojects.php';
       xhttp.open("GET", url);
@@ -44,18 +44,16 @@ export default {
       xhttp.onreadystatechange=(e)=>{
         if(xhttp.readyState == 4 && xhttp.status == 200){
            var projectData = JSON.parse(xhttp.responseText);
-           console.log(projectData);
           for(var key in projectData){
-            console.log("before: " + this.projects);
-            this.projects = Object.assign({}, this.projects, {
-              title: this.projects[key].title,
-              id: this.projects[key].id,
-              goal: this.projects[key].goal,
-              image: this.projects[key].image,
-              description: this.projects[key].description,
-              publickey: this.projects[key].publickey
-            })
-            console.log("after: " + this.projects);
+            let newObj = {
+              title: projectData[key].title,
+              id: projectData[key].id,
+              goal: projectData[key].goal,
+              image: projectData[key].image,
+              description: projectData[key].description,
+              publickey: projectData[key].publickey
+            };
+            self.projects.push(newObj)
           }
         }
       }
@@ -82,6 +80,7 @@ export default {
   },
   created() {
     this.getJSON();
+
   }
 };
 /*
