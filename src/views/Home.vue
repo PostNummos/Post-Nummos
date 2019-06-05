@@ -9,7 +9,10 @@
       </v-card-title>
       <ul id="v-for-object" class="demo">
         <li v-for="value in projects">
+          <img src ={{value.image}}>
           {{ value.title }}
+          {{ value.description}}
+          EOS Public Key: {{value.key}}
         </li>
       </ul>
       <v-form>
@@ -72,7 +75,8 @@ export default {
         return console.log('Failed to get Scatter account');
 
       if (
-        await this.eosio.transferToken('donate')
+        //to, from, memo, quantity. see: https://eosio.stackexchange.com/questions/3587/how-to-transfer-eos-token-using-scatter-js-or-eos-js
+        await this.eosio.transaction('transfer', { from: this.eosio.account.name, to: "destinationaccount", quantity: : "50.0000 EOS", memo: "Project Name" })
       ) {
           console.log("success");
         }

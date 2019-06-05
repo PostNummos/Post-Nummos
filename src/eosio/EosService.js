@@ -110,7 +110,6 @@ class EosService {
   };
 */
   
-  
 }
 
 export default EosService;
