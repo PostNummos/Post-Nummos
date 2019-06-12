@@ -75,7 +75,8 @@ export default {
 
       if (
         //to, from, memo, quantity. see: https://eosio.stackexchange.com/questions/3587/how-to-transfer-eos-token-using-scatter-js-or-eos-js
-        await this.eosio.transaction('transfer', { from: this.eosio.account.name, to: "destinationaccount", quantity: "50.0000 EOS", memo: "Project Name" })
+        //await this.eosio.transaction('transfer', { from: this.eosio.account.name, to: "destinationaccount", quantity: "50.0000 EOS", memo: "Project Name" })
+        await this.eosio.transaction2('login', { user: this.eosio.account.name })
       ) {
           console.log("success");
         }
