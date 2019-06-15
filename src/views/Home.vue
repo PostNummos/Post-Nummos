@@ -1,119 +1,95 @@
 <template>
   <v-container>
     <v-layout row wrap>
-      <v-flex class="project" v-for="value in projects" xs12 sm6 md3>
-        <img v-bind:src="value.image" class="img-fluid">
-        <div class="details">
-          <h3><a href="#project-details">{{ value.title }}</a></h3>
-          <p>{{ value.description }}</p>
-        </div>
+      <v-flex class="about" lg6>
+        <h2>Who We Are</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet auctor tellus. Donec pharetra
+            mollis orci eu gravida. Aliquam gravida in dui quis iaculis. Sed quis blandit arcu. Donec risus velit, 
+            ullamcorper vel tincidunt at, ornare at leo. Cras pretium dictum vehicula. Vivamus sit amet leo euismod, 
+            pharetra est eget, aliquet nulla.
+        </p>
+        <p>Nullam mollis, urna eget pharetra ornare, elit dui luctus neque, non finibus mi elit vitae risus. Ut at 
+          lacus odio. Suspendisse volutpat porta nisi, non tristique velit dapibus sit amet. Sed vitae efficitur 
+          urna, sed semper felis. Fusce bibendum leo dui, id facilisis tellus tincidunt quis. Duis in ullamcorper 
+          nibh, ut cursus velit. Etiam venenatis felis non dolor faucibus finibus. Morbi maximus velit sit amet justo 
+          convallis feugiat. Nullam id imperdiet justo. Nullam luctus tortor nec eros consectetur finibus. Cras 
+          consectetur felis ut ipsum scelerisque, ut luctus felis rutrum. Pellentesque habitant morbi tristique senectus 
+          et netus et malesuada fames ac turpis egestas. Sed eu massa a sem molestie auctor euismod sit amet massa. 
+          Ut id quam in ante laoreet congue aliquam nec eros. Aenean ut ex a ipsum facilisis hendrerit quis pharetra 
+          neque.
+        </p>
+      </v-flex>
+      <v-flex class="about" lg6>
+        <h2>About Post Nummos</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet auctor tellus. Donec pharetra
+           mollis orci eu gravida. Aliquam gravida in dui quis iaculis. Sed quis blandit arcu. Donec risus velit, 
+           ullamcorper vel tincidunt at, ornare at leo. Cras pretium dictum vehicula. Vivamus sit amet leo euismod, 
+           pharetra est eget, aliquet nulla.
+        </p>
+        <p>Nullam mollis, urna eget pharetra ornare, elit dui luctus neque, non finibus mi elit vitae risus. Ut at 
+              lacus odio. Suspendisse volutpat porta nisi, non tristique velit dapibus sit amet. Sed vitae efficitur 
+              urna, sed semper felis. Fusce bibendum leo dui, id facilisis tellus tincidunt quis. Duis in ullamcorper 
+              nibh, ut cursus velit. Etiam venenatis felis non dolor faucibus finibus. Morbi maximus velit sit amet justo 
+              convallis feugiat. Nullam id imperdiet justo. Nullam luctus tortor nec eros consectetur finibus. Cras 
+              consectetur felis ut ipsum scelerisque, ut luctus felis rutrum. Pellentesque habitant morbi tristique senectus 
+              et netus et malesuada fames ac turpis egestas. Sed eu massa a sem molestie auctor euismod sit amet massa. 
+              Ut id quam in ante laoreet congue aliquam nec eros. Aenean ut ex a ipsum facilisis hendrerit quis pharetra 
+              neque.
+        </p>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import EosService from '@/eosio/EosService';
-export default {
-
-  data() {
-    return {
-      accountName: '',
-      logDetails: {pubkey: ''},
-      projects:[],
-      eosio: null
-    };
-  },
-  methods:{
-    
-    getJSON: async function(){
-      var self= this;
-      var xhttp = new XMLHttpRequest();
-      var url = 'https://www.copiedcode.com/getprojects.php';
-      xhttp.open("GET", url);
-      xhttp.send();
-      xhttp.onreadystatechange=()=>{
-        if(xhttp.readyState == 4 && xhttp.status == 200){
-           var projectData = JSON.parse(xhttp.responseText);
-          for(var key in projectData){
-            let newObj = {
-              title: projectData[key].title,
-              id: projectData[key].id,
-              goal: projectData[key].goal,
-              image: projectData[key].image,
-              description: projectData[key].description,
-              publickey: projectData[key].publickey
-            };
-            self.projects.push(newObj)
-          }
-        }
-      }
-    },
-    
-    donate: async function() {
-      if (this.eosio === null) {
-        this.eosio = new EosService(
-          process.env.VUE_APP_DAPP_NAME,
-          process.env.VUE_APP_SMART_CONTRACT_NAME
-        );
-      }
-
-      if (!(await this.eosio.connect()))
-        return console.log('Failed to get Scatter account');
-
-      if (
-        //to, from, memo, quantity. see: https://eosio.stackexchange.com/questions/3587/how-to-transfer-eos-token-using-scatter-js-or-eos-js
-        //await this.eosio.transaction('transfer', { from: this.eosio.account.name, to: "destinationaccount", quantity: "50.0000 EOS", memo: "Project Name" })
-        await this.eosio.transaction2('login', { user: this.eosio.account.name })
-      ) {
-          console.log("success");
-        }
-      }
-  },
-  created() {
-    this.getJSON();
-
-  }
-};
-/*
-getProfiles() {
-    this.rpc
-      .get_table_rows({
-        json: true,
-        code: "youraccname1", // contract who owns the table
-        scope: "youraccname1", // scope of the table
-        table: "users", // name of the table as specified by the contract abi
-        limit: 100
-      })
-      .then(result => this.setState({ users: result.rows }));
-  }
-*/
-//}
 </script>
 
 <style>
-.theme--light.application {
-  background: none;
+#app {
+  background: url("/img/about-bg.jpg");
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  color: #fff;
+  padding: 60px 0 40px 0;
 }
 
-.project {
-  padding: 10px;
+div.application--wrap {
+  min-height: 0;
 }
 
-img {
-  padding-bottom: 10px;
+#app:before {
+  content: "";
+  background: rgba(13, 20, 41, 0.8);
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
-h3 {
-  margin-bottom: 5px;
-  font-weight: 500;
+#app h2 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #fff;
 }
 
-a {
-  color: #e8732f;
+#app h3 {
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #fff;
 }
 
-p {
-  color: #9195a2;
+#app p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.about {
+  padding: 25px;
 }
 </style>

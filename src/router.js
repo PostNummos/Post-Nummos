@@ -14,14 +14,19 @@ export default new Router({
       component: Login
     },
     {
+      path: '/',
+      name: 'home',
+      component: () => import('./views/Home.vue')
+    },
+    {
       path: '/signup',
       name: 'signup',
       component: () => import('./views/Signup.vue')
     },
     {
-      path: '/',
-      name: 'home',
-      component: () => import('./views/Home.vue')
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('./views/Dashboard.vue')
     },
     {
       path: '/admin',
