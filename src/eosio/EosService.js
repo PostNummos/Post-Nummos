@@ -39,7 +39,6 @@ class EosService {
 
   transaction = async (action, data) => { 
     this.api = this.scatter.eos(network, Api, { rpc: this.rpc });
-
     const resultWithConfig = await this.api.transact(
       {
         actions: [
@@ -68,28 +67,29 @@ class EosService {
   };
 
 transaction2 = async (action, data) => { 
-    this.api = this.scatter.eos(network, Api, { rpc: this.rpc });
-    const resultWithConfig = await this.api.transaction({
-          actions: [
-          {
-              account: "youraccname1", //has to be the smart contract name of the token you want to transfer - eosio for EOS or eosjackscoin for JKR for example
-              name: "transfer",
-              authorization: [{
-                  actor: this.account.name,
-                  permission: this.account.authority
-              }
-              ],
-              data: {
-                  from: this.account.name,
-                  to: "testproheife",
-                  quantity: "50.0000 EOS",
-                  memo: ""
-              }
-          }]
-      });
-    //console.log(resultWithConfig);
+   this.api = this.scatter.eos(network, Api, { rpc: this.rpc });
+
+    var res = await this.api.transact({
+    actions: [
+    {
+        account: "kylinspoints", //has to be the smart contract name of the token you want to transfer - eosio for EOS or eosjackscoin for JKR for example
+        name: "transfer",
+        authorization: [{
+            actor: this.account.name,
+            permission: this.account.authority
+        }
+        ],
+        data: {
+            from: this.account.name,
+            to: "testproheife",
+            quantity: "50.0000 EOS",
+            memo: ""
+        }
+    }]
+});
+    console.log(resultWithConfig);
     return true;
-  };
+  }
 /*
   transferToken = async()=>{
     this.api = this.scatter.eos(network, Api, { rpc: this.rpc });
