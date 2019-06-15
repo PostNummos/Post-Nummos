@@ -1,5 +1,20 @@
 <template>
   <v-container>
+    <header id="header">
+      <div class="container">
+        <div id="logo" class="pull-left">
+          <h1><a href="/"><span>POST</span>NUMMOS</a></h1>
+        </div>
+
+        <nav id="nav-menu-container">
+          <ul class="nav-menu">
+            <li class="menu-active"><a href="/">Home</a></li>
+            <li><a href="login">Sign In</a></li>
+            <li class="action"><a href="signup">Create Profile</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
     <v-layout row class="text-xs-center">
       <v-flex xs3 style="background-image: url('http://cdn.wallpapersafari.com/7/86/gqiGH7.jpg')">
         <v-card height="500px"></v-card>
