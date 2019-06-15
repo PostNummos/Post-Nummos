@@ -1,26 +1,14 @@
 <template>
   <v-container>
-    <v-card-title primary-title>
-      <h4>Non-Admin User Page</h4>
-    </v-card-title>
-    <v-card flat>
-      <v-card-title primary-title>
-        <h4>Donate</h4>
-      </v-card-title>
-      <ul id="v-for-object" class="demo">
-        <li v-for="value in projects"><br>
-          <img v-bind:src="value.image" :alt= value.title /><br>
-          {{ value.title }}<br>
-          {{ value.description}}<br>
-          EOS Public Key: {{value.publickey}}<br>
-        </li>
-      </ul>
-      <v-form>
-        <v-card-actions>
-          <v-btn @click="donate()" primary large block>Donate</v-btn>
-        </v-card-actions>
-      </v-form>
-    </v-card>
+    <v-layout row wrap>
+      <v-flex class="project" v-for="value in projects" xs12 sm6 md3>
+        <img v-bind:src="value.image" class="img-fluid">
+        <div class="details">
+          <h3><a href="#project-details">{{ value.title }}</a></h3>
+          <p>{{ value.description }}</p>
+        </div>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -102,3 +90,30 @@ getProfiles() {
 */
 //}
 </script>
+
+<style>
+.theme--light.application {
+  background: none;
+}
+
+.project {
+  padding: 10px;
+}
+
+img {
+  padding-bottom: 10px;
+}
+
+h3 {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+a {
+  color: #e8732f;
+}
+
+p {
+  color: #9195a2;
+}
+</style>
