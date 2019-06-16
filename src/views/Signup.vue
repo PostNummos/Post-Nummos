@@ -15,47 +15,82 @@
         </nav>
       </div>
     </header>
-    <v-layout row class="text-xs-center">
-      <v-flex xs3 style="background-image: url('http://cdn.wallpapersafari.com/7/86/gqiGH7.jpg')">
-        <v-card height="500px"></v-card>
-      </v-flex>
-      <v-flex xs4 class="grey lighten-4">
-        <v-container style="position: relative;top: 13%;" class="text-xs-center">
-          <v-card flat>
-            <v-card-title primary-title>
-              <h4>Signup</h4>
-            </v-card-title>
-            <v-form>
-              <v-container>
-                <v-layout>
-                  <v-flex
-                    xs12
-                    md4
-                  >
-                    <v-text-field
-                      v-model="logDetails.email"
+    <section id="register" class="section-bg wow">
+
+      <div class="container">
+
+        <div class="section-header">
+          <h2>Register</h2>
+        </div>
+
+        <div class="form">
+          <form action="">
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                <div class="validation"></div>
+              </div>
+              <div class="form-group col-md-12">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email" data-rule="email" data-msg="Please enter a valid email" v-model="logDetails.email"
                       label="E-mail"
                       v-on:keyup="keymonitor"
-                      required
-                    ></v-text-field>
-                    <input type="radio" v-model="logDetails.status" value="0">
-                    <label for="one">Individual</label>
-                    <br>
-                    <input type="radio" v-model="logDetails.status" value="1">
-                    <label for="two">Organization</label>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-              <v-card-actions>
-                <v-btn @click="handleLogin()" primary large block>Signup</v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-        </v-container>
-      </v-flex>
-    </v-layout>
+                      required />
+                <div class="validation"></div>
+              </div>
+              <div class="form-group col-md-6">
+                <input type="radio" v-model="logDetails.status" value="0">
+                <label for="one">Individual</label>
+              </div>
+              <div class="form-group col-md-6">
+                <input type="radio" v-model="logDetails.status" value="1">
+                <label for="two">Organization</label>
+              </div>
+            </div>
+            
+            <div><button @click="handleLogin()" type="submit">Register</button></div>
+          </form>
+        </div>
+
+      </div>
+    </section>
   </v-container>
 </template>
+
+<style>
+  #app h2 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  #app h3 {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  #app p, label {
+    font-size: 14px;
+    margin: 20px;
+    color: #fff;
+  }
+
+  #app .form button[type="submit"] {
+    background: #e8732f;
+    border: 0;
+    padding: 10px 40px;
+    color: #fff;
+    transition: 0.4s;
+    cursor: pointer;
+  }
+
+  div.application--wrap {
+    min-height: 0;
+  }
+</style>
 <script src="axios.js"></script>
 <script>
 window.open('scatter://','_self');
