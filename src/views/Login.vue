@@ -45,7 +45,7 @@
 
     #app p, label {
       font-size: 14px;
-      margin: 20px;
+      margin-bottom: 20px;
       color: #fff;
     }
 

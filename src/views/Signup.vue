@@ -72,7 +72,7 @@
     color: #fff;
   }
 
-  #app p, label {
+  #app.form p, label {
     font-size: 14px;
     margin: 20px;
     color: #fff;
@@ -88,7 +88,7 @@
   }
 
   div.application--wrap {
-    min-height: 0;
+  min-height: 0;
   }
 </style>
 <script src="axios.js"></script>
