@@ -27,10 +27,6 @@
           <form action="">
             <div class="form-row">
               <div class="form-group col-md-12">
-                <input type="text" name="name" class="form-control" id="name" placeholder="Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                <div class="validation"></div>
-              </div>
-              <div class="form-group col-md-12">
                 <input type="email" class="form-control" name="email" id="email" placeholder="Email" data-rule="email" data-msg="Please enter a valid email" v-model="logDetails.email"
                       label="E-mail"
                       v-on:keyup="keymonitor"
