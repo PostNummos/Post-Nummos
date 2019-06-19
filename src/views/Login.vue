@@ -8,8 +8,8 @@
 
         <nav id="nav-menu-container">
           <ul class="nav-menu">
-            <li class="menu-active"><a href="/">Home</a></li>
-            <li><a href="login">Sign In</a></li>
+            <li><a href="/">Home</a></li>
+            <li class="menu-active"><a href="login">Sign In</a></li>
             <li class="action"><a href="signup">Create Profile</a></li>
           </ul>
         </nav>

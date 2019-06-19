@@ -8,7 +8,7 @@
 
         <nav id="nav-menu-container">
           <ul class="nav-menu">
-            <li class="menu-active"><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="login">Sign In</a></li>
             <li class="action"><a href="signup">Create Profile</a></li>
           </ul>
@@ -26,18 +26,20 @@
         <div class="form">
           <form action="">
             <div class="form-row">
-              <div class="form-group col-md-12">
+              <div class="form-group col-md-6 col-xs-12">
                 <input type="email" class="form-control" name="email" id="email" placeholder="Email" data-rule="email" data-msg="Please enter a valid email" v-model="logDetails.email"
                       label="E-mail"
                       v-on:keyup="keymonitor"
                       required />
                 <div class="validation"></div>
               </div>
-              <div class="form-group col-md-6">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3 col-xs-6">
                 <input type="radio" v-model="logDetails.status" value="0">
                 <label for="one">Individual</label>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3 col-xs-6">
                 <input type="radio" v-model="logDetails.status" value="1">
                 <label for="two">Organization</label>
               </div>

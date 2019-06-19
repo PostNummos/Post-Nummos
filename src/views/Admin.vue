@@ -8,7 +8,7 @@
 
         <nav id="nav-menu-container">
           <ul class="nav-menu">
-            <li class="menu-active"><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="dashboard">Dashboard</a></li>
             <li class="action"><a href="#logout">Logout</a></li>
           </ul>
