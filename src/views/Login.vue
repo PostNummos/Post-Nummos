@@ -101,7 +101,7 @@
               if (response.data.error) {
                 console.log(response.data.message);
               } else {
-                self.$store.commit('loginStatus', true);
+                self.$store.commit('loginStatus', true, response.data.email);
                 if (response.data.admin)
                   self.$router.push('admin');
                 else

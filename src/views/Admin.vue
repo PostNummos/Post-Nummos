@@ -87,7 +87,8 @@
           description: '',
           imagelink: '',
           pubkey: '',
-          goal: ''
+          goal: '',
+          email: this.$store.getters.email
         }
       };
     },
