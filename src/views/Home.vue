@@ -1,5 +1,6 @@
 <template>
   <v-container>
+  
     <v-layout row wrap>
       <v-flex class="project" v-for="value in projects" xs12 sm6 md3>
         <img v-bind:src="value.image" class="img-fluid">
@@ -11,7 +12,6 @@
     </v-layout>
   </v-container>
 </template>
-
 <script>
 import EosService from '@/eosio/EosService';
 export default {

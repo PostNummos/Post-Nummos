@@ -7,6 +7,10 @@
       <v-flex xs4 class="grey lighten-4">
         <v-container style="position: relative;top: 13%;" class="text-xs-center">
           <v-card flat>
+            <v-card-actions>
+                <v-btn @click="openScatter()" primary large block>Open Scatter</v-btn>
+            </v-card-actions>
+          </v-card>
             <v-card-title primary-title>
               <h4>Login</h4>
             </v-card-title>
@@ -35,6 +39,9 @@ export default {
     };
   },
   methods: {
+    openScatter: async function(){
+      window.open('scatter://','_self');
+    },
     handleLogin: async function() {
       const self = this;
       if (this.eosio === null) {

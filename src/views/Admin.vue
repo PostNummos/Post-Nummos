@@ -41,10 +41,12 @@
                       v-on:keyup="keymonitor"
                       required
                     ></v-text-field>
+                    <v-card-actions>
+                      <v-btn @click="generateKey()" primary large block>Generate Public Key</v-btn>
+                    </v-card-actions>
                     <div class="currency-input">
                       <form action="" novalidate>
-                        <input type="number" name="price" lable="Goal" v-model="logDetails.goal" @keypress="stripTheGarbage($event)" @blur="formatDollars()" required/>
-                        <span class="currency-symbol">$</span>
+                        <input type="number" name="price" label="Goal" placeholder= "$500.00" v-model="logDetails.goal" @keypress="stripTheGarbage($event)" @blur="formatDollars()" required/>
                       </form>
                     </div>
                   </v-flex>
@@ -69,6 +71,17 @@ export default {
     };
   },
   methods: {
+    generateKey: function(){
+     var result           = '';
+     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+     var charactersLength = characters.length;
+     for ( var i = 0; i < 32; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+     }
+     result = 'EOS' + result;
+     this.logDetails.pubkey = result;
+    },
+
     stripTheGarbage: function(e) {
       if (e.keyCode < 48 && e.keyCode !== 46 || e.keyCode > 59) {
         e.preventDefault()
