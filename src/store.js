@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    loggedIn: false
+    loggedIn: false,
     email: ""
   },
   mutations: {
@@ -15,7 +15,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    loggedIn: state => state.loggedIn
+    loggedIn: state => state.loggedIn,
     email: state => state.email
   },
   actions: {}
