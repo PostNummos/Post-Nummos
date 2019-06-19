@@ -15,64 +15,70 @@
         </nav>
       </div>
     </header>
-    <v-layout row class="text-xs-center">
-      <v-flex xs3 style="background-image: url('http://cdn.wallpapersafari.com/7/86/gqiGH7.jpg')">
-        <v-card height="500px"></v-card>
-      </v-flex>
-      <v-flex xs4 class="grey lighten-4">
-        <v-container style="position: relative;top: 13%;" class="text-xs-center">
-          <v-card flat>
-            <v-card-title primary-title>
-              <h4>Create Project</h4>
-            </v-card-title>
-            <v-form>
-              <v-container>
-                <v-layout>
-                  <v-flex
-                    xs12
-                    md4
-                  >
-                    <v-text-field
-                      v-model="logDetails.title"
-                      label="Title"
-                      v-on:keyup="keymonitor"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      v-model="logDetails.description"
-                      label="Description"
-                      v-on:keyup="keymonitor"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      v-model="logDetails.imagelink"
-                      label="Image Link"
-                      v-on:keyup="keymonitor"
-                      required
-                    ></v-text-field>
-                    <v-text-field
-                      v-model="logDetails.pubkey"
-                      label="Public Key of Project"
-                      v-on:keyup="keymonitor"
-                      required
-                    ></v-text-field>
-                    <div class="currency-input">
-                      <form action="" novalidate>
-                        <input type="number" name="price" lable="Goal" v-model="logDetails.goal" @keypress="stripTheGarbage($event)" @blur="formatDollars()" required/>
-                        <span class="currency-symbol">$</span>
-                      </form>
-                    </div>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-              <v-card-actions>
-                <v-btn @click="submitProj()" primary large block>Add Project</v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-        </v-container>
-      </v-flex>
-    </v-layout>
+
+    <section id="register" class="section-bg wow">
+
+      <div class="container">
+
+        <div class="section-header">
+          <h2>Create Project</h2>
+        </div>
+      </div>
+    </section>
+
+    <div class="form">
+      <form action="">
+        <div class="form-row">
+          <div class="form-group col-md-6 col-xs-12">
+              <input type="title" class="form-control" name="title" id="title" placeholder="Title" data-rule="title" data-msg="Please enter a title" v-model="logDetails.title"
+                    label="Title"
+                    v-on:keyup="keymonitor"
+                    required />
+              <div class="validation"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 col-xs-12">
+              <input type="description" class="form-control" name="description" id="description" placeholder="Description" data-rule="description" data-msg="Please enter a description." v-model="logDetails.description"
+                    label="Description"
+                    v-on:keyup="keymonitor"
+                    required />
+              <div class="validation"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 col-xs-12">
+              <input type="imagelink" class="form-control" name="imagelink" id="imagelink" placeholder="Image Link" data-rule="imagelink" data-msg="Please enter an image link." v-model="logDetails.imagelink"
+                    label="Image Link"
+                    v-on:keyup="keymonitor"
+                    required />
+              <div class="validation"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 col-xs-12">
+              <input type="pubkey" class="form-control" name="pubkey" id="pubkey" placeholder="Public Key of Project" data-rule="imagelink" data-msg="Please enter an image link." v-model="logDetails.pubkey"
+                    label="Public Key of Project"
+                    v-on:keyup="keymonitor"
+                    required />
+              <div class="validation"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 col-xs-12">
+              <input type="number" class="form-control" name="price" id="goal" placeholder="Goal Amount ($)" data-rule="number" data-msg="Please enter a goal amount." v-model="logDetails.goal"
+                    label="Goal"
+                    v-on:keyup="keymonitor"
+                    @keypress="stripTheGarbage($event)" 
+                    @blur="formatDollars()" 
+                    required />
+              <div class="validation"></div>
+          </div>
+        </div>
+
+        <div><button @click="submitProj()" type="submit">Add Project</button></div>
+      </form>
+    </div>    
   </v-container>
 </template>
 <script src="axios.js"></script>
