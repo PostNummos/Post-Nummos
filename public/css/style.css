@@ -6,6 +6,10 @@ header .container {
   top: -20px;
 }
 
+#app {
+  background: #101522;
+}
+
 body {
   background: #fff;
   color: #2f3138;

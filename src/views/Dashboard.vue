@@ -8,156 +8,80 @@
         <nav id="nav-menu-container">
           <ul class="nav-menu">
             <li><a href="/">Home</a></li>
-            <li><a href="login">Sign In</a></li>
-            <li class="action"><a href="signup">Create Profile</a></li>
+            <li class="menu-active"><a href="dashboard">Dashboard</a></li>
+            <li class="action"><a href="#logout">Logout</a></li>
           </ul>
         </nav>
       </div>
     </header>
-    <section id="register" class="section-bg wow">
-      <div class="container">
-        <div class="section-header">
-          <h2>Register</h2>
+    <div class="section-header">
+      <h2>Projects</h2>
+      <p>Here are some of our projects</p>
+    </div>
+    <v-layout row wrap>
+      <v-flex class="project" v-for="value in projects" xs12 sm6 md3>
+        <img v-bind:src="value.image" class="img-fluid">
+        <div class="details">
+          <h3><a href="#project-details">{{ value.title }}</a></h3>
+          <p>{{ value.description }}</p>
         </div>
-        <div class="form">
-          <form action="">
-            <div class="form-row">
-              <div class="form-group col-md-6 col-xs-12">
-                <input type="email" class="form-control" name="email" id="email" placeholder="Email" data-rule="email" data-msg="Please enter a valid email" v-model="logDetails.email"
-                  label="E-mail"
-                  v-on:keyup="keymonitor"
-                  required />
-                <div class="validation"></div>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-3 col-xs-6">
-                <input type="radio" v-model="logDetails.status" value="0">
-                <label for="one">Individual</label>
-              </div>
-              <div class="form-group col-md-3 col-xs-6">
-                <input type="radio" v-model="logDetails.status" value="1">
-                <label for="two">Organization</label>
-              </div>
-            </div>
-            <div><button @click="handleLogin()" type="submit">Register</button></div>
-          </form>
-        </div>
-      </div>
-    </section>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <style>
-  #app h2 {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  #app {
+    padding: 60px 0 30px 0;
+    background: url("/img/projects-bg.jpg");
+    background-size: cover;
+    overflow: hidden;
+    position: relative;
     color: #fff;
+    padding: 60px 0 40px 0;
   }
 
-  #app h3 {
-    font-size: 18px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    color: #fff;
+  #app:before {
+    content: "";
+    background: rgba(13, 20, 41, 0.8);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
   }
 
-  #app.form p,
-  label {
-    font-size: 14px;
-    margin: 20px;
-    color: #fff;
+  #app .section-header h2 {
+    color: white;
   }
 
-  #app .form button[type="submit"] {
-    background: #e8732f;
-    border: 0;
-    padding: 10px 40px;
-    color: #fff;
-    transition: 0.4s;
-    cursor: pointer;
+  .theme--light.application {
+    background: none;
   }
 
-  div.application--wrap {
-    min-height: 0;
+  .project {
+    padding: 10px;
+  }
+
+  img {
+    padding-bottom: 10px;
+  }
+
+  h3 {
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  a {
+    color: #e8732f;
+  }
+
+  p {
+    color: #9195a2;
   }
 </style>
 
-<script src="axios.js"></script>
-
 <script>
-  window.open('scatter://', '_self');
-  import EosService from '@/eosio/EosService';
-
-  export default {
-    data() {
-      return {
-        accountName: '',
-        logDetails: {
-          email: '',
-          pubkey: '',
-          status: ''
-        },
-        eosio: null
-      };
-    },
-    methods: {
-      handleLogin: async function() {
-        const self = this;
-        if (this.eosio === null) {
-          this.eosio = new EosService(
-            process.env.VUE_APP_DAPP_NAME,
-            process.env.VUE_APP_SMART_CONTRACT_NAME
-          );
-        }
-
-        if (!(await this.eosio.connect()))
-          return console.log('Failed to get Scatter account');
-
-        if (
-          await this.eosio.transaction('login', {
-            user: this.eosio.account.name
-          })
-        ) {
-          this.logDetails.pubkey = this.eosio.account.publicKey;
-          const axios = require('axios')
-          var logForm = this.toFormData(this.logDetails);
-          axios.post('https://www.copiedcode.com/signup.php', logForm)
-            .then(function(response) {
-              if (response.data.error != "") {
-                console.log(response.data.message);
-              } else {
-                console.log(response.data.message);
-                self.$store.commit('loginStatus', true);
-                self.$router.push('home');
-              }
-            });
-        }
-      },
-
-      keymonitor: function(event) {
-        if (event.key == "Enter") {
-          this.handleLogin();
-        }
-      },
-
-
-
-      toFormData: function(obj) {
-        var form_data = new FormData();
-        for (var key in obj) {
-          form_data.append(key, obj[key]);
-        }
-        console.log(obj);
-        return form_data;
-      }
-
-    }
-  };
-
-
   jQuery(document).ready(function($) {
 
     // Back to top button
@@ -289,4 +213,85 @@
     });
 
   });
+
+  import EosService from '@/eosio/EosService';
+  export default {
+
+    data() {
+      return {
+        accountName: '',
+        logDetails: {
+          pubkey: ''
+        },
+        projects: [],
+        eosio: null
+      };
+    },
+    methods: {
+
+      getJSON: async function() {
+        var self = this;
+        var xhttp = new XMLHttpRequest();
+        var url = 'https://www.copiedcode.com/getprojects.php';
+        xhttp.open("GET", url);
+        xhttp.send();
+        xhttp.onreadystatechange = () => {
+          if (xhttp.readyState == 4 && xhttp.status == 200) {
+            var projectData = JSON.parse(xhttp.responseText);
+            for (var key in projectData) {
+              let newObj = {
+                title: projectData[key].title,
+                id: projectData[key].id,
+                goal: projectData[key].goal,
+                image: projectData[key].image,
+                description: projectData[key].description,
+                publickey: projectData[key].publickey
+              };
+              self.projects.push(newObj)
+            }
+          }
+        }
+      },
+
+      donate: async function() {
+        if (this.eosio === null) {
+          this.eosio = new EosService(
+            process.env.VUE_APP_DAPP_NAME,
+            process.env.VUE_APP_SMART_CONTRACT_NAME
+          );
+        }
+
+        if (!(await this.eosio.connect()))
+          return console.log('Failed to get Scatter account');
+
+        if (
+          //to, from, memo, quantity. see: https://eosio.stackexchange.com/questions/3587/how-to-transfer-eos-token-using-scatter-js-or-eos-js
+          //await this.eosio.transaction('transfer', { from: this.eosio.account.name, to: "destinationaccount", quantity: "50.0000 EOS", memo: "Project Name" })
+          await this.eosio.transaction2('login', {
+            user: this.eosio.account.name
+          })
+        ) {
+          console.log("success");
+        }
+      }
+    },
+    created() {
+      this.getJSON();
+
+    }
+  };
+  /*
+  getProfiles() {
+      this.rpc
+        .get_table_rows({
+          json: true,
+          code: "youraccname1", // contract who owns the table
+          scope: "youraccname1", // scope of the table
+          table: "users", // name of the table as specified by the contract abi
+          limit: 100
+        })
+        .then(result => this.setState({ users: result.rows }));
+    }
+  */
+  //}
 </script>
