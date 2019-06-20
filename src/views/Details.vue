@@ -15,15 +15,15 @@
       </div>
     </header>
     <div class="section-header">
-      <h2>Projects</h2>
-      <p>Here are some of our projects</p>
+      <h2>{{ projects[projId].title }}</h2>
     </div>
     <v-layout row wrap>
-      <v-flex class="project" v-for="value in projects" xs12 sm6 md3>
-        <router-link :to="{ name: 'details', params: { projectId: value.id}}"><img v-bind:src="value.image" class="img-fluid"></router-link>
+      <v-flex class="project"  xs12 sm6 md3>
+        <img v-bind:src="projects[projId].image" class="img-fluid">
         <div class="details">
-          <router-link :to="{ name: 'details', params: { projectId: value.id}}"><h3><a href="#project-details">{{ value.title }}</a></h3></router-link>
-          <p>{{ value.description }}</p>
+          <h3>{{ projects[projId].title }}</h3>
+          <p>{{ projects[projId].description }}</p>
+          <div><button type="submit">Donate</button></div> <!--This currently doesn't do anything, still working on it-->
         </div>
       </v-flex>
     </v-layout>
@@ -80,7 +80,7 @@
     color: #9195a2;
   }
 </style>
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script>
   jQuery(document).ready(function($) {
 
@@ -224,8 +224,46 @@
           pubkey: ''
         },
         projects: [],
+        projId: '',
         eosio: null
       };
+    },
+    created() {
+        var parts = this.$route.path.split('/')
+        this.projId = Number(parts[parts.length-1])
+        this.projects = this.$store.getters.projects
+        if (this.projects.length == 0) {
+          this.getJSON()
+        }
+        if (this.projects.length == 0 || this.projects[this.projId]== null) {
+          self.$router.push('home');
+        }
+      },
+    watch: {
+    '$route' (to, from) {
+      var parts = this.$route.path.split('/')
+        this.projId = parts[parts.length-1]
+        this.projects = this.$store.getters.projects
+        if (this.projects.length == 0) {
+          this.getJSON()
+        }
+        if (this.projects.length == 0 || this.projects[this.projId]== null) {
+          self.$router.push('home');
+        }
+      }
+    },
+    updated: function () {
+      this.$nextTick(function () {
+      var parts = this.$route.path.split('/')
+        this.projId = parts[parts.length-1]
+        this.projects = this.$store.getters.projects
+        if (this.projects.length == 0) {
+          this.getJSON()
+        }
+        if (this.projects.length == 0 || this.projects[this.projId]== null) {
+          self.$router.push('home');
+        }
+      })
     },
     methods: {
       getJSON: async function() {
@@ -252,7 +290,6 @@
           }
         }
       },
-
       donate: async function() {
         if (this.eosio === null) {
           this.eosio = new EosService(
@@ -274,10 +311,6 @@
           console.log("success");
         }
       }
-    },
-    created() {
-      this.getJSON();
-
     }
   };
   /*
