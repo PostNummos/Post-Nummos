@@ -20,7 +20,7 @@
           <h2>Register</h2>
         </div>
         <div class="form">
-          <form action="">
+          <div>
             <div class="form-row">
               <div class="form-group col-md-6 col-xs-12">
                 <input type="email" class="form-control" name="email" id="email" placeholder="Email" data-rule="email" data-msg="Please enter a valid email" v-model="logDetails.email"
@@ -41,7 +41,7 @@
               </div>
             </div>
             <div><button @click="handleLogin()" type="submit">Register</button></div>
-          </form>
+          </div>
         </div>
       </div>
     </section>
