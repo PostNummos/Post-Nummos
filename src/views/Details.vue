@@ -27,6 +27,13 @@
         </div>
       </v-flex>
     </v-layout>
+    <v-layout row wrap>
+      <v-flex class="project" v-for="value in projDonations"  :key="value.id" xs12 sm6 md3>
+        <div class="details">
+          <li><a>{{ value.publickey }} donated {{ value.amount }} on {{ value.timestamp }}</a></li> <!--Sort into table maybe? Not sure best way to display -->
+        </div>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -224,6 +231,7 @@
           pubkey: ''
         },
         projects: [],
+        donations:[],
         projId: '',
         eosio: null
       };
@@ -233,11 +241,12 @@
         this.projId = Number(parts[parts.length-1])
         this.projects = this.$store.getters.projects
         if (this.projects.length == 0) {
-          this.getJSON()
+          this.getProjects()
         }
         if (this.projects.length == 0 || this.projects[this.projId]== null) {
           self.$router.push('home');
         }
+        this.getDonations()
       },
     watch: {
     '$route' (to, from) {
@@ -265,8 +274,13 @@
         }
       })
     },
+    computed: {
+      projDonations() {
+       return this.donations.filter(d => d.projId== this.projId)
+      }
+    },
     methods: {
-      getJSON: async function() {
+      getProjects: async function() {
         var self = this;
         var xhttp = new XMLHttpRequest();
         var url = 'https://www.copiedcode.com/getprojects.php';
@@ -286,6 +300,29 @@
               };
               self.projects.push(newObj)
               self.$store.commit('addProject', newObj);
+            }
+          }
+        }
+      },
+      getDonations: async function() {
+        var self = this;
+        var xhttp = new XMLHttpRequest();
+        var url = 'https://www.copiedcode.com/getdonations.php';
+        xhttp.open("GET", url);
+        xhttp.send();
+        xhttp.onreadystatechange = () => {
+          if (xhttp.readyState == 4 && xhttp.status == 200) {
+            var donationData = JSON.parse(xhttp.responseText);
+            for (var key in donationData) {
+              let newObj = {
+                timestamp: donationData[key].timestamp,
+                id: donationData[key].id,
+                amount: donationData[key].amount,
+                name: donationData[key].name,
+                projId: donationData[key].projId,
+                publickey: donationData[key].publickey
+              };
+              self.donations.push(newObj)
             }
           }
         }
