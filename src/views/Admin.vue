@@ -22,7 +22,7 @@
       </div>
     </section>
     <div class="form">
-      <form action="">
+      <div>
         <div class="form-row">
           <div class="form-group col-md-6 col-xs-12">
             <input type="title" class="form-control" name="title" id="title" placeholder="Title" data-rule="title" data-msg="Please enter a title" v-model="logDetails.title"
@@ -72,7 +72,7 @@
           </div>
         </div>
         <div><button @click="submitProj()" type="submit">Add Project</button></div>
-      </form>
+      </div>
     </div>
     <div class="section-header">
       <h2>Your Projects</h2>
