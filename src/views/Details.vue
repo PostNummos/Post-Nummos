@@ -41,7 +41,7 @@
         <h3>About the Project</h3>
         <p>{{ projects[projId].description }}</p>
 
-        <div>
+        <div v-if="projDonations.length > 0">
             <div class="row schedule-item">
               <div class="col-md-2"><h3>Amount</h3></div>
               <div class="col-md-2"><h3>Date</h3></div>
@@ -287,6 +287,8 @@
       };
     },
     created() {
+        console.log(this.$route.query)
+      console.log(this.$route.path)
         var parts = this.$route.path.split('/')
         this.projId = Number(parts[parts.length-1])
         this.logDetails.projId = Number(parts[parts.length-1])
@@ -294,37 +296,13 @@
         if (this.projects.length == 0) {
           this.getProjects()
         }
-        if (this.projects.length == 0 || this.projects[this.projId]== null) {
-          self.$router.push('home');
-        }
+        //if (this.projects.length == 0 || this.projects[this.projId]== null) {
+         // this.$router.push('home');
+       // }
+       console.log(this.projId)
+       console.log(this.projects)
         this.getDonations()
       },
-    watch: {
-    '$route' (to, from) {
-      var parts = this.$route.path.split('/')
-        this.projId = parts[parts.length-1]
-        this.projects = this.$store.getters.projects
-        if (this.projects.length == 0) {
-          this.getJSON()
-        }
-        if (this.projects.length == 0 || this.projects[this.projId]== null) {
-          self.$router.push('home');
-        }
-      }
-    },
-    updated: function () {
-      this.$nextTick(function () {
-      var parts = this.$route.path.split('/')
-        this.projId = parts[parts.length-1]
-        this.projects = this.$store.getters.projects
-        if (this.projects.length == 0) {
-          this.getJSON()
-        }
-        if (this.projects.length == 0 || this.projects[this.projId]== null) {
-          self.$router.push('home');
-        }
-      })
-    },
     computed: {
       projDonations() {
        return this.donations.filter(d => d.projId== this.projId)

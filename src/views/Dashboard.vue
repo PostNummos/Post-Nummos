@@ -227,6 +227,11 @@
         eosio: null
       };
     },
+    mounted(){
+      if(this.$route.query.id != null){
+        this.$router.push({ name: 'details', params: { projectId: this.$route.query.id } })
+      } 
+    },
     methods: {
       getJSON: async function() {
         var self = this;
@@ -277,7 +282,6 @@
     },
     created() {
       this.getJSON();
-
     }
   };
   /*
