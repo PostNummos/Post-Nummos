@@ -16,6 +16,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
+      alias: '*',
       component: () => import('./views/Home.vue')
     },
     {
@@ -26,11 +27,7 @@ export default new Router({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: () => import('./views/Dashboard.vue')
-    },
-    {
-      path: '/projects',
-      name: 'dashboard',
+      alias: '/projects',
       component: () => import('./views/Dashboard.vue')
     },
     {
@@ -42,12 +39,6 @@ export default new Router({
       path: '/projects/:projectId',
       name: 'details',
       component: () => import('./views/Details.vue'),
-    },
-    {
-      path: '*',
-      name: 'home',
-      component: () => import('./views/Home.vue'),
     }
-
   ]
 });

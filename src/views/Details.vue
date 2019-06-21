@@ -8,23 +8,24 @@
         <nav id="nav-menu-container">
           <ul class="nav-menu">
             <li><a href="/">Home</a></li>
-            <li class="menu-active"><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
             <li class="action"><a href="#logout">Logout</a></li>
           </ul>
         </nav>
       </div>
     </header>
+    <div id="back-nav">
+      <a href="/projects">Projects</a> / {{ projects[projId].title }}
+    </div>
     <div class="section-header">
       <h2>{{ projects[projId].title }}</h2>
     </div>
     <v-layout row wrap>
-      <v-flex class="project"  xs12 sm6 md3>
-        <img v-bind:src="projects[projId].image" class="img-fluid">
-        <div class="details">
-          <h3>{{ projects[projId].title }}</h3>
-          <p>{{ projects[projId].description }}</p>
-          <div class="form-group col-md-6 col-xs-12">
-            <input type="number" class="form-control" name="price" id="amount" placeholder="Donation Amount ($)" data-rule="number" data-msg="Please enter a donation amount." v-model="logDetails.amount"
+      <v-flex class="project" xs12 sm12 md3>
+        <div class="details" id="left-sidebar">
+          <h3>Donate today!</h3>
+          <div class="form-group col-md-3 col-xs-12">
+            <input type="number" class="form-control" name="price" id="amount" placeholder="Amount ($)" data-rule="number" data-msg="Please enter a donation amount." v-model="logDetails.amount"
               label="Donation Amount"
               v-on:keyup="keymonitor"
               @keypress="stripTheGarbage($event)" 
@@ -35,12 +36,23 @@
           <div><button @click="donate()" type="submit">Donate</button></div> <!--This currently doesn't do anything, still working on it-->
         </div>
       </v-flex>
-    </v-layout>
-    <v-layout row wrap>
-      <v-flex class="project" v-for="value in projDonations"  :key="value.id" xs12 sm6 md3>
-        <div class="details">
-          <li><a>{{ value.publickey }} donated {{ value.amount }} on {{ value.timestamp }}</a></li> <!--Sort into table maybe? Not sure best way to display -->
-        </div>
+      <v-flex class="project" xs12 sm12 md9>
+        <img v-bind:src="projects[projId].image" class="img-fluid">
+        <h3>About the Project</h3>
+        <p>{{ projects[projId].description }}</p>
+
+        <div>
+            <div class="row schedule-item">
+              <div class="col-md-2"><h3>Amount</h3></div>
+              <div class="col-md-2"><h3>Date</h3></div>
+              <div class="col-md-2"><h3>Public Key</h3></div>
+            </div>
+            <div class="row schedule-item" v-for="value in projDonations"  :key="value.id">
+              <div class="col-md-2">${{ value.amount }}</div>
+              <div class="col-md-2">{{ value.timestamp }}</div>
+              <div class="col-md-2"><p>{{ value.publickey }}</p></div>
+            </div>
+          </div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -95,6 +107,24 @@
   p {
     color: #9195a2;
   }
+
+  img {
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    padding: 0;
+  }
+
+  .left-sidebar-scrolled {
+    position: fixed;
+    top: 290px;
+  }
+  @media only screen and (max-width: 959px) {
+    #back-nav {
+      margin-bottom: 15px;
+    }
+  }
 </style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script>
@@ -127,6 +157,15 @@
     if ($(window).scrollTop() > 100) {
       $('#header').addClass('header-scrolled');
     }
+
+    // Donate left side-bar fixed on scroll
+    $(window).scroll(function() {
+      if ($(this).scrollTop() > 720 && $(this).innerWidth() >= 960) {
+        $('#left-sidebar').addClass('left-sidebar-scrolled');
+      } else {
+        $('#left-sidebar').removeClass('left-sidebar-scrolled');
+      }
+    });
 
     // Real view height for mobile devices
     if (window.matchMedia("(max-width: 767px)").matches) {
