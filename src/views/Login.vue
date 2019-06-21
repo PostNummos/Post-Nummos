@@ -19,7 +19,8 @@
         <div class="section-header">
           <h2>Sign In</h2>
         </div>
-        <div class="text-center"><button @click="openScatter()">Open Scatter</button></div>
+        <div class="text-center"><button @click="openScatter()" type="submit">Open Scatter</button></div>
+        <br>
         <div class="text-center"><button @click="handleLogin()" type="submit">Login</button></div>
       </div>
     </section>
@@ -62,7 +63,9 @@
     min-height: 0;
   }
 </style>
-
+<script>
+window.open('scatter://','_self');
+</script>
 <script>
   import EosService from '@/eosio/EosService';
   export default {
@@ -107,7 +110,7 @@
                 if (response.data.admin)
                   self.$router.push('admin');
                 else
-                  self.$router.push('home');
+                  self.$router.push('dashboard');
               }
             });
         }

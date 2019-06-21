@@ -58,7 +58,7 @@
               required />
             <div class="validation"></div>
           </div>
-          <div><button @click="generateKey()">Generate Public Key</button></div>
+          <div><button @click="generateKey()" type="submit">Generate Public Key</button></div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6 col-xs-12">
@@ -74,11 +74,73 @@
         <div><button @click="submitProj()" type="submit">Add Project</button></div>
       </form>
     </div>
+    <div class="section-header">
+      <h2>Your Projects</h2>
+      <p>Other projects you've uploaded</p>
+    </div>
+    <v-layout row wrap>
+      <v-flex class="project" v-for="value in myProjects" xs12 sm6 md3>
+        <router-link :to="{ name: 'details', params: { projectId: value.id}}"><img v-bind:src="value.image" class="img-fluid"></router-link>
+        <div class="details">
+          <router-link :to="{ name: 'details', params: { projectId: value.id}}"><h3><a href="#project-details">{{ value.title }}</a></h3></router-link>
+          <p>{{ value.description }}</p>
+        </div>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script src="axios.js"></script>
+<style>
+  #app {
+    padding: 60px 0 30px 0;
+    background: url("/img/projects-bg.jpg");
+    background-size: cover;
+    overflow: hidden;
+    position: relative;
+    color: #fff;
+    padding: 60px 0 40px 0;
+  }
 
+  #app:before {
+    content: "";
+    background: rgba(13, 20, 41, 0.8);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #app .section-header h2 {
+    color: white;
+  }
+
+  .theme--light.application {
+    background: none;
+  }
+
+  .project {
+    padding: 10px;
+  }
+
+  img {
+    padding-bottom: 10px;
+  }
+
+  h3 {
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  a {
+    color: #e8732f;
+  }
+
+  p {
+    color: #9195a2;
+  }
+</style>
 <script>
   export default {
     data() {
@@ -89,11 +151,43 @@
           imagelink: '',
           pubkey: '',
           goal: '',
-          email: this.$store.getters.email
-        }
+          email: this.$store.getters.email,
+        },
+        projects: []
       };
     },
+    computed: {
+      myProjects() {
+       return this.projects.filter(p => p.createdBy== this.$store.getters.email)
+      }
+    },
+    created() {
+      this.getJSON();
+    },
     methods: {
+      getJSON: async function() {
+        var self = this;
+        var xhttp = new XMLHttpRequest();
+        var url = 'https://www.copiedcode.com/getprojects.php';
+        xhttp.open("GET", url);
+        xhttp.send();
+        xhttp.onreadystatechange = () => {
+          if (xhttp.readyState == 4 && xhttp.status == 200) {
+            var projectData = JSON.parse(xhttp.responseText);
+            for (var key in projectData) {
+              let newObj = {
+                title: projectData[key].title,
+                id: projectData[key].id,
+                goal: projectData[key].goal,
+                image: projectData[key].image,
+                description: projectData[key].description,
+                publickey: projectData[key].publickey
+              };
+              self.projects.push(newObj)
+            }
+          }
+        }
+      },
       generateKey: function(){
        var result           = '';
        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -140,6 +234,9 @@
       submitProj: async function() {
         const self = this;
         const axios = require('axios')
+        console.log(this.$store.getters.email)
+        for(var key in this.logDetails)
+          console.log(key + " " + this.logDetails.key)
         var logForm = this.toFormData(this.logDetails);
         axios.post('https://www.copiedcode.com/createproject.php', logForm)
           .then(function(response) {
@@ -147,14 +244,14 @@
               console.log(response.data.message);
             } else {
               console.log(response.data.message);
-              self.$router.push('home');
+              self.$router.push('dashboard');
             }
           });
       },
 
       keymonitor: function(event) {
         if (event.key == "Enter") {
-          this.handleLogin();
+          this.submitProj();
         }
       },
 
@@ -166,6 +263,7 @@
           form_data.append(key, obj[key]);
         }
         console.log(obj);
+        console.log(form_data)
         return form_data;
       }
     }

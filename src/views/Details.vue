@@ -33,7 +33,7 @@
               required />
             <div class="validation"></div>
           </div>
-          <div><button @click="donate()" type="submit">Donate</button></div> <!--This currently doesn't do anything, still working on it-->
+          <div><button @click="donate()" type="submit">Donate</button></div>
         </div>
       </v-flex>
       <v-flex class="project" xs12 sm12 md9>
@@ -364,6 +364,7 @@
         xhttp.onreadystatechange = () => {
           if (xhttp.readyState == 4 && xhttp.status == 200) {
             var donationData = JSON.parse(xhttp.responseText);
+            this.donations = []
             for (var key in donationData) {
               let newObj = {
                 timestamp: donationData[key].timestamp,
@@ -381,7 +382,7 @@
 
       keymonitor: function(event) {
         if (event.key == "Enter") {
-          this.handleLogin();
+          this.donate();
         }
       },
       toFormData: function(obj) {
