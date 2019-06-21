@@ -23,7 +23,16 @@
         <div class="details">
           <h3>{{ projects[projId].title }}</h3>
           <p>{{ projects[projId].description }}</p>
-          <div><button type="submit">Donate</button></div> <!--This currently doesn't do anything, still working on it-->
+          <div class="form-group col-md-6 col-xs-12">
+            <input type="number" class="form-control" name="price" id="amount" placeholder="Donation Amount ($)" data-rule="number" data-msg="Please enter a donation amount." v-model="logDetails.amount"
+              label="Donation Amount"
+              v-on:keyup="keymonitor"
+              @keypress="stripTheGarbage($event)" 
+              @blur="formatDollars()" 
+              required />
+            <div class="validation"></div>
+          </div>
+          <div><button @click="donate()" type="submit">Donate</button></div> <!--This currently doesn't do anything, still working on it-->
         </div>
       </v-flex>
     </v-layout>
@@ -228,7 +237,9 @@
       return {
         accountName: '',
         logDetails: {
-          pubkey: ''
+          pubkey: '',
+          amount: '',
+          projId: ''
         },
         projects: [],
         donations:[],
@@ -239,6 +250,7 @@
     created() {
         var parts = this.$route.path.split('/')
         this.projId = Number(parts[parts.length-1])
+        this.logDetails.projId = Number(parts[parts.length-1])
         this.projects = this.$store.getters.projects
         if (this.projects.length == 0) {
           this.getProjects()
@@ -327,8 +339,85 @@
           }
         }
       },
+
+      keymonitor: function(event) {
+        if (event.key == "Enter") {
+          this.handleLogin();
+        }
+      },
+      toFormData: function(obj) {
+        var form_data = new FormData();
+        for (var key in obj) {
+          form_data.append(key, obj[key]);
+        }
+        console.log(obj);
+        return form_data;
+      },
+      stripTheGarbage: function(e) {
+        if (e.keyCode < 48 && e.keyCode !== 46 || e.keyCode > 59) {
+          e.preventDefault()
+        }
+      },
+      formatDollars: function() {
+        if (this.price != '') {
+          var num = this.price;
+
+          num = Number(num);
+
+          var countDecimals = function(value) {
+            if (Math.floor(value) === value) return 0;
+          }
+
+          var decimal = countDecimals(num);
+
+          if (decimal < 2) {
+            num = num.toFixed(2)
+          }
+
+          if (decimal > 2) {
+            num = num.toFixed(decimal)
+          }
+
+          if (parseInt(num) < 1) {
+            num = "." + String(num).split(".")[1];
+          }
+
+          this.price = num;
+        }
+      },
       donate: async function() {
+        const self = this;
         if (this.eosio === null) {
+          this.eosio = new EosService(
+            process.env.VUE_APP_DAPP_NAME,
+            process.env.VUE_APP_SMART_CONTRACT_NAME
+          );
+        }
+        if (!(await this.eosio.connect()))
+          return console.log('Failed to get Scatter account');
+
+        if (await this.eosio.transaction('login', {
+            user: this.eosio.account.name
+          })
+          ){
+          this.logDetails.pubkey = this.eosio.account.publicKey;
+          const axios = require('axios')
+          var logForm = this.toFormData(this.logDetails);
+          axios.post('https://www.copiedcode.com/createdonation.php', logForm)
+            .then(function(response) {
+              if (response.data.error != "") {
+                console.log(response.data.message);
+              } else {
+                console.log(response.data.message);
+                self.getDonations()
+              }
+          });
+        }
+      }
+        //donate: async function(){
+          //Below is for when we get on the EOS mainnet
+
+        /*if (this.eosio === null) {
           this.eosio = new EosService(
             process.env.VUE_APP_DAPP_NAME,
             process.env.VUE_APP_SMART_CONTRACT_NAME
@@ -346,8 +435,7 @@
           })
         ) {
           console.log("success");
-        }
-      }
+        }*/
     }
   };
   /*
