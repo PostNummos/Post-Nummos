@@ -29,6 +29,11 @@ export default new Router({
       component: () => import('./views/Dashboard.vue')
     },
     {
+      path: '/projects',
+      name: 'dashboard',
+      component: () => import('./views/Dashboard.vue')
+    },
+    {
       path: '/admin',
       name: 'admin',
       component: () => import('./views/Admin.vue')
@@ -37,6 +42,11 @@ export default new Router({
       path: '/projects/:projectId',
       name: 'details',
       component: () => import('./views/Details.vue'),
+    },
+    {
+      path: '*',
+      name: 'home',
+      component: () => import('./views/Home.vue'),
     }
 
   ]
