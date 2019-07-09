@@ -10,9 +10,10 @@ export default new Vuex.Store({
     projects:[]
   },
   mutations: {
-    loginStatus(state, status, email) {
+    loginStatus(state, status, email, pubkey) {
       state.loggedIn = status
       state.email = email
+      state.pubkey = pubkey
     },
     addProject(state, newObj) {
       state.projects[newObj.id] = newObj
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     loggedIn: state => state.loggedIn,
     email: state => state.email,
     projects: state => state.projects
+    pubkey: state => state.pubkey
   },
   actions: {}
 });
