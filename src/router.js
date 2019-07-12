@@ -36,6 +36,11 @@ export default new Router({
       component: () => import('./views/Admin.vue')
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('./views/Profile.vue')
+    },
+    {
       path: '/projects/:projectId',
       name: 'details',
       component: () => import('./views/Details.vue'),

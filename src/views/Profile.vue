@@ -21,9 +21,9 @@
       <v-flex class="project" xs12 sm12 md9>
         <div v-if="myDonations.length > 0">
           <div class="row schedule-item">
-            <div class="col-md-2"><h3>Project</div>
-            <div class="col-md-2"><h3>Amount</h3></div>
-            <div class="col-md-2"><h3>Date</h3></div>
+            <div id="project_name" class="col-md-2"><h3>Project</h3></div>
+            <div id="donation_amount" class="col-md-2"><h3>Amount</h3></div>
+            <div id="donation_date" class="col-md-2"><h3>Date</h3></div>
           </div>
           <div class="row schedule-item" v-for="value in myDonations"  :key="value.id">
             <div class="col-md-2"><p>{{ projects[value.projId].title }}</p></div>

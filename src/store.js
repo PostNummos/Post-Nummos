@@ -22,7 +22,7 @@ export default new Vuex.Store({
   getters: {
     loggedIn: state => state.loggedIn,
     email: state => state.email,
-    projects: state => state.projects
+    projects: state => state.projects,
     pubkey: state => state.pubkey
   },
   actions: {}
