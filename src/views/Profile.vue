@@ -31,6 +31,7 @@
             <div class="col-md-2">{{ value.timestamp }}</div>
           </div>
         </div>
+        <div id="pie_chart" style="height: 500px"></div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -247,6 +248,43 @@
 
   });
 
+  anychart.onDocumentReady(function() {
+    var pie_chart_data = [];
+    for (var projName in window.donations_project) { 
+      var project_info = {
+        x: window.donations_project,
+        value: window.donations_project[projName]
+      };
+      pie_chart_data.push(project_info);
+    }
+
+    // create the chart
+    var chart = anychart.pie();
+
+    // set the chart title
+    chart.title("Donations by Project");
+
+    // add the data
+    chart.data(pie_chart_data);
+
+    // display the chart in the container
+    chart.container('pie_chart');
+
+    chart.background().fill("none");
+
+    // enable HTML for tooltips
+    chart.tooltip().useHtml(true);
+
+    // tooltip settings
+    var tooltip = chart.tooltip();
+    tooltip.format("Your Donation: <b>${%value}</b>");
+
+    chart.title().fontColor('white');
+    chart.legend().fontColor('white');
+    chart.draw();
+
+  });
+
   import EosService from '@/eosio/EosService';
   export default {
 
@@ -276,10 +314,22 @@
          // this.$router.push('home');
        // }
         this.getDonations()
+        
+        var window.donations_project = {};
+        var donation;
+        for (donation of this.donations) { 
+          var proj_name = projects[donation.projId].title;
+          if (proj_name in projects) {
+            window.donations_project[proj_name] += donation.amount;
+          } else {
+            window.donations_project[proj_name] = donation.amount;
+          }
+        }
       },
     computed: {
       myDonations() {
-       return this.donations.filter(d => d.publickey == this.logDetails.pubKey)
+        window.donations = this.donations.filter(d => d.publickey == this.logDetails.pubKey);
+       return window.donations;
       }
     },
     methods: {
