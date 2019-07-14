@@ -246,43 +246,41 @@
       }
     });
 
-  });
+    anychart.onDocumentReady(function() {
+      var pie_chart_data = [];
+        for (var projName in window.donations_project) { 
+          var project_info = {
+            x: projName,
+            value: window.donations_project[projName]
+          };
+          pie_chart_data.push(project_info);
+        }
 
-  anychart.onDocumentReady(function() {
-    var pie_chart_data = [];
-    for (var projName in window.donations_project) { 
-      var project_info = {
-        x: window.donations_project,
-        value: window.donations_project[projName]
-      };
-      pie_chart_data.push(project_info);
-    }
+        // create the chart
+        var chart = anychart.pie();
 
-    // create the chart
-    var chart = anychart.pie();
+        // set the chart title
+        chart.title("Donations by Project");
 
-    // set the chart title
-    chart.title("Donations by Project");
+        // add the data
+        chart.data(pie_chart_data);
 
-    // add the data
-    chart.data(pie_chart_data);
+        // display the chart in the container
+        chart.container('pie_chart');
 
-    // display the chart in the container
-    chart.container('pie_chart');
+        chart.background().fill("none");
 
-    chart.background().fill("none");
+        // enable HTML for tooltips
+        chart.tooltip().useHtml(true);
 
-    // enable HTML for tooltips
-    chart.tooltip().useHtml(true);
+        // tooltip settings
+        var tooltip = chart.tooltip();
+        tooltip.format("Your Donation: <b>${%value}</b>");
 
-    // tooltip settings
-    var tooltip = chart.tooltip();
-    tooltip.format("Your Donation: <b>${%value}</b>");
-
-    chart.title().fontColor('white');
-    chart.legend().fontColor('white');
-    chart.draw();
-
+        chart.title().fontColor('white');
+        chart.legend().fontColor('white');
+        chart.draw();
+      });
   });
 
   import EosService from '@/eosio/EosService';
@@ -313,18 +311,7 @@
         //if (this.projects.length == 0 || this.projects[this.projId]== null) {
          // this.$router.push('home');
        // }
-        this.getDonations()
         
-        var window.donations_project = {};
-        var donation;
-        for (donation of this.donations) { 
-          var proj_name = projects[donation.projId].title;
-          if (proj_name in projects) {
-            window.donations_project[proj_name] += donation.amount;
-          } else {
-            window.donations_project[proj_name] = donation.amount;
-          }
-        }
       },
     computed: {
       myDonations() {
@@ -355,6 +342,7 @@
               self.$store.commit('addProject', newObj);
             }
           }
+          this.getDonations()
         }
       },
       getDonations: async function() {
@@ -379,6 +367,16 @@
               self.donations.push(newObj)
             }
           }
+          window.donations_project = [];
+          for (var donation in this.donations) { 
+            var proj_name = this.projects[this.donations[donation].projId].title;
+            if (proj_name in window.donations_project) {
+              window.donations_project[proj_name] += parseFloat(this.donations[donation].amount);
+            } else {
+              window.donations_project[proj_name] = parseFloat(this.donations[donation].amount);
+            }
+          }
+          this.drawChart();
         }
       },
 
