@@ -17,21 +17,34 @@
     <div class="section-header">
       <h2>Profile</h2>
     </div>
-    <v-layout row wrap>
-      <v-flex class="project" xs12 sm12 md9>
+    <v-layout>
+      <v-flex class="project">
         <div v-if="myDonations.length > 0">
-          <div class="row schedule-item">
-            <div id="project_name" class="col-md-2"><h3>Project</h3></div>
-            <div id="donation_amount" class="col-md-2"><h3>Amount</h3></div>
-            <div id="donation_date" class="col-md-2"><h3>Date</h3></div>
+          <div class="row" id="charts">
+            <div id="pie_chart" class="col-md-6" style="height: 350px"></div>
+            <div id="bar_chart" class="col-md-6" style="height: 350px"></div>
           </div>
-          <div class="row schedule-item" v-for="value in myDonations"  :key="value.id">
-            <div class="col-md-2"><p>{{ projects[value.projId].title }}</p></div>
-            <div class="col-md-2">${{ value.amount }}</div>
-            <div class="col-md-2">{{ value.timestamp }}</div>
-          </div>
+          </br></br>
+          <table class="table table-dark" id="donation_table">
+            <thead>
+              <tr>
+                <th scope="col">Project</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody v-for="value in myDonations" :key="value.id">
+              <tr>
+                <th scope="row">{{ projects[value.projId].title }}</th>
+                <td>${{ value.amount }}</td>
+                <td>{{ value.timestamp }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div id="pie_chart" style="height: 500px"></div>
+        <div v-if="myDonations.length == 0" style="text-align:center;">
+          There are no contributions linked to your account. <a href="/projects"> Find a project to support here!</a>
+        </div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -245,42 +258,6 @@
         }
       }
     });
-
-    anychart.onDocumentReady(function() {
-      var pie_chart_data = [];
-        for (var projName in window.donations_project) { 
-          var project_info = {
-            x: projName,
-            value: window.donations_project[projName]
-          };
-          pie_chart_data.push(project_info);
-        }
-
-        // create the chart
-        var chart = anychart.pie();
-
-        // set the chart title
-        chart.title("Donations by Project");
-
-        // add the data
-        chart.data(pie_chart_data);
-
-        // display the chart in the container
-        chart.container('pie_chart');
-
-        chart.background().fill("none");
-
-        // enable HTML for tooltips
-        chart.tooltip().useHtml(true);
-
-        // tooltip settings
-        var tooltip = chart.tooltip();
-        tooltip.format("Your Donation: <b>${%value}</b>");
-
-        chart.title().fontColor('white');
-        chart.legend().fontColor('white');
-        chart.draw();
-      });
   });
 
   import EosService from '@/eosio/EosService';
@@ -316,7 +293,7 @@
     computed: {
       myDonations() {
         window.donations = this.donations.filter(d => d.publickey == this.logDetails.pubKey);
-       return window.donations;
+        return window.donations;
       }
     },
     methods: {
@@ -345,7 +322,7 @@
           this.getDonations()
         }
       },
-      getDonations: async function() {
+      getDonations: function() {
         var self = this;
         var xhttp = new XMLHttpRequest();
         var url = 'https://www.copiedcode.com/getdonations.php';
@@ -365,15 +342,6 @@
                 publickey: donationData[key].publickey
               };
               self.donations.push(newObj)
-            }
-          }
-          window.donations_project = [];
-          for (var donation in this.donations) { 
-            var proj_name = this.projects[this.donations[donation].projId].title;
-            if (proj_name in window.donations_project) {
-              window.donations_project[proj_name] += parseFloat(this.donations[donation].amount);
-            } else {
-              window.donations_project[proj_name] = parseFloat(this.donations[donation].amount);
             }
           }
           this.drawChart();
@@ -423,6 +391,103 @@
           }
 
           this.price = num;
+        }
+      },
+      drawChart: async function() {
+        if (!window.charts_drawn) {
+          // pie chart
+          var donations_project = [];
+          for (var donation in donations) { 
+            var proj_name = this.projects[donations[donation].projId].title;
+            if (proj_name in donations_project) {
+              donations_project[proj_name] += parseFloat(donations[donation].amount);
+            } else {
+              donations_project[proj_name] = parseFloat(donations[donation].amount);
+            }
+          }
+
+          var pie_chart_data = [];
+          for (var projName in donations_project) { 
+            var project_info = {
+              x: projName,
+              value: donations_project[projName]
+            };
+            pie_chart_data.push(project_info);
+          }
+
+          // create the chart
+          var chart = anychart.pie();
+
+          // set the chart title
+          chart.title("Donations by Project");
+
+          // add the data
+          chart.data(pie_chart_data);
+
+          // display the chart in the container
+          chart.container('pie_chart');
+
+          chart.background().fill("none");
+
+          // enable HTML for tooltips
+          chart.tooltip().useHtml(true);
+
+          // tooltip settings
+          var tooltip = chart.tooltip();
+          tooltip.format("Your Contribution: <b>${%value}</b>");
+
+          chart.title().fontColor('white');
+          chart.legend().fontColor('white');
+          chart.draw();
+
+          // bar chart
+
+          var donations_month = [];
+          for (var donation in donations) { 
+            var donation_month = new Date(donations[donation].timestamp).getMonth();
+            if (donation_month in donations_month) {
+              donations_month[donation_month] += parseFloat(donations[donation].amount);
+            } else {
+              donations_month[donation_month] = parseFloat(donations[donation].amount);
+            }
+          }
+
+          var bar_chart_data = [];
+          const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+          for (var month in donations_month) { 
+            var month_info = {
+              x: monthNames[month],
+              value: donations_month[month]
+            };
+            bar_chart_data.push(month_info);
+          }
+
+          // create a chart
+          var bar_chart = anychart.bar();
+
+          // create a bar series and set the data
+          var series = bar_chart.bar(bar_chart_data);
+
+          // set the container id
+          bar_chart.container("bar_chart");
+
+          bar_chart.title("Donations by Month");
+
+          bar_chart.background().fill("none");
+
+          // enable HTML for tooltips
+          bar_chart.tooltip().useHtml(true);
+
+          // tooltip settings
+          var tooltip = bar_chart.tooltip();
+          tooltip.format("Your Contribution: <b>${%value}</b>");
+
+          // initiate drawing the chart
+          bar_chart.draw();
+
+          window.charts_drawn = true;
         }
       }
     }

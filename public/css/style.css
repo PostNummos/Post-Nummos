@@ -24,7 +24,8 @@ a {
 a:hover,
 a:active,
 a:focus {
-  color: #e8732f;
+  color: white;
+  opacity: 0.75;
   outline: none;
   text-decoration: none;
 }
@@ -729,6 +730,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .anychart-credits-text {
   visibility: collapse;
+}
+
+#bar_chart text {
+  fill: white;
 }
 
 /*--------------------------------------------------------------

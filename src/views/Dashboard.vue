@@ -242,6 +242,7 @@
         xhttp.onreadystatechange = () => {
           if (xhttp.readyState == 4 && xhttp.status == 200) {
             var projectData = JSON.parse(xhttp.responseText);
+            console.log(projectData);
             for (var key in projectData) {
               let newObj = {
                 title: projectData[key].title,
